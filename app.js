@@ -18,6 +18,7 @@ import reviewRouter from './routes/review-routes.js';
 import viewRouter from './routes/view-routes.js';
 import bookingRouter from './routes/booking-routes.js';
 
+// Start Express
 const app = express();
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
