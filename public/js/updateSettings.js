@@ -6,7 +6,7 @@ const updateSettings = async (data, type) => {
     const url = type === 'Password' ? 'updateMyPassword' : 'updateMe';
     const res = await axios({
       method: 'PATCH',
-      url: `http://127.0.0.1:3000/api/v1/users/${url}`,
+      url: `/api/v1/users/${url}`,
       data,
     });
 
@@ -44,7 +44,7 @@ if (updatePassword) {
     const passwordConfirm = document.getElementById('password-confirm').value;
     await updateSettings(
       { passwordCurrent, password, passwordConfirm },
-      'Password',
+      'Password'
     );
 
     document.querySelector('.btn__save--password').textContent =
