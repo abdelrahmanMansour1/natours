@@ -9,6 +9,7 @@ import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import url from 'url';
+import compression from 'compression';
 
 import globalErrHandler from './controllers/error-controller.js';
 import AppError from './utils/appError.js';
@@ -140,6 +141,8 @@ app.use(
     ],
   })
 );
+
+app.use(compression());
 
 // test middleware
 app.use((req, res, next) => {

@@ -113,7 +113,7 @@ const tourSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  },
+  }
 );
 
 tourSchema.index({ price: 1, ratingsAverage: -1 });
@@ -146,10 +146,10 @@ tourSchema.pre(/^find/, function (next) {
   });
   next();
 });
-tourSchema.post('find', function (docs, next) {
-  console.log(`Query Took ${Date.now() - this.start}!`);
-  next();
-});
+// tourSchema.post('find', function (docs, next) {
+//   console.log(`Query Took ${Date.now() - this.start}!`);
+//   next();
+// });
 
 // AGGREGATION MIDDLEWARE
 

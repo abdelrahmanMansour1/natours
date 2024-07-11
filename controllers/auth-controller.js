@@ -15,7 +15,7 @@ const sendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
   };
@@ -87,7 +87,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   // 2) Verification the token
   const decoded = await util.promisify(jwt.verify)(
     token,
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET
   );
 
   // 3) Check if user stil exits
@@ -102,8 +102,8 @@ export const protect = asyncHandler(async (req, res, next) => {
     return next(
       new AppError(
         'Password was changed after the token was issued, Please log in and try again!',
-        401,
-      ),
+        401
+      )
     );
   }
 
@@ -118,14 +118,14 @@ export const isLoggedIn = async (req, res, next) => {
     if (req.cookies.jwt) {
       const decoded = await util.promisify(jwt.verify)(
         req.cookies.jwt,
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRET
       );
       // 3) Check if user stil exits
       const userExist = await User.findById(decoded.id);
 
       if (!userExist) {
         return next(
-          new AppError('The user of this token no longer exists', 401),
+          new AppError('The user of this token no longer exists', 401)
         );
       }
 
@@ -134,8 +134,8 @@ export const isLoggedIn = async (req, res, next) => {
         return next(
           new AppError(
             'Password was changed after the token was issued, Please log in and try again!',
-            401,
-          ),
+            401
+          )
         );
       }
       res.locals.user = userExist;
@@ -154,8 +154,8 @@ export const restrictTo =
       return next(
         new AppError(
           'User does not have permission to complete this action',
-          403,
-        ),
+          403
+        )
       );
     }
     next();
@@ -175,7 +175,9 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+  const resetURL = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/users/resetPassword/${resetToken}`;
   try {
     // await sendEmail({
     //   email: user.email,
@@ -194,13 +196,10 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
 
-    console.log(err);
+    //console.log(err);
 
     return next(
-      new AppError(
-        'There was a problem sending the email try again later',
-        500,
-      ),
+      new AppError('There was a problem sending the email try again later', 500)
     );
   }
 });
@@ -219,7 +218,7 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
 
   if (!user) {
     return next(
-      new AppError('Password reset token is invalid or has expired', 400),
+      new AppError('Password reset token is invalid or has expired', 400)
     );
   }
 
