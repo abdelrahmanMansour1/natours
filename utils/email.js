@@ -1,8 +1,11 @@
 /* eslint-disable */
 import nodemailer from 'nodemailer';
 import pug from 'pug';
+import dotenv from 'dotenv';
 import * as htmlToText from 'html-to-text';
 import url from 'url';
+
+dotenv.config();
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -21,8 +24,8 @@ class Email {
         host: 'smtp-relay.brevo.com',
         port: 587,
         auth: {
-          user: '7483df001@smtp-brevo.com',
-          pass: 'xsmtpsib-a114553756b4198192511a12d71a36fd00fa5f2902f93444251549940e677aae-WX0JkSRGt1Iygvzm',
+          user: process.env.BREVO_USER,
+          pass: process.env.SMTP_KEY,
         },
       });
     }
@@ -64,7 +67,7 @@ class Email {
   async sendPasswordReset() {
     await this.send(
       'resetPassword',
-      'Your password reset token (valid for 10 minutes)',
+      'Your password reset token (valid for 10 minutes)'
     );
   }
 }
